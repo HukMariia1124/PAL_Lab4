@@ -53,7 +53,7 @@ namespace Lab4
                 Console.WriteLine("Елементи масиву, які розміщені між останніми входженнями максимального та мінімального чисел: [" + string.Join(", ", array2) + "]");
                 Console.WriteLine("Середнє арифметичне: " + average);
             }
-            Main(new string[] { });
+            Main();
         }
         static void UsingMethods(int[] array)
         {
@@ -81,7 +81,7 @@ namespace Lab4
                 Console.WriteLine("Елементи масиву, які розміщені між останніми входженнями максимального та мінімального чисел: [" + string.Join(", ", array2) + "]");
                 Console.WriteLine("Середнє арифметичне: " + average);
             }
-            Main(new string[] { });
+            Main();
         }
         static void ChosenMethod(int choice, int[] array)
         {
@@ -94,7 +94,7 @@ namespace Lab4
                 UsingMethods(array);
             }
         }
-        static void RandomlyFillAnArray(int choice, int n, int[] array)
+        static void RandomlyFillAnArray(int choice, int[] array)
         {
             Console.WriteLine("Введіть мінімальне число в масиві");
             int min = int.Parse(Console.ReadLine());
@@ -108,7 +108,7 @@ namespace Lab4
             Console.WriteLine();
             ChosenMethod(choice, array);
         }
-        static void FillAnArrayOneByOne(int choice, int n, int[] array)
+        static void FillAnArrayOneByOne(int choice, int[] array)
         {
             Console.WriteLine("Введіть кожен елемент масива в окремому рядку");
             for (int i = 0; i < array.Length; i++)
@@ -117,7 +117,7 @@ namespace Lab4
             }
             ChosenMethod(choice, array);
         }
-        static void FillAnArrayInOneRow(int choice, int n, int[] array)
+        static void FillAnArrayInOneRow(int choice, int[] array)
         {
             Console.WriteLine("Введіть всі елементи масива в одному рядку");
             string[] elements = Console.ReadLine().Trim().Split();
@@ -127,11 +127,11 @@ namespace Lab4
             }
             ChosenMethod(choice, array);
         }
-        static void StartToFillAnArray(out int n, out int[] array)
+        static void StartToFillAnArray(out int[] array)
         {
             Console.WriteLine("\nМетод заповнення обрано");
             Console.WriteLine("Введіть скільки елементів має бути в масиві");
-            n = int.Parse(Console.ReadLine());
+            int n = int.Parse(Console.ReadLine());
             array = new int[n];
         }
         static void HowToFillAnArray(int choice)
@@ -148,8 +148,8 @@ namespace Lab4
                 switch (choice2)
                 {
                     case 1:
-                        StartToFillAnArray(out n, out array);
-                        RandomlyFillAnArray(choice, n, array);
+                        StartToFillAnArray(out array);
+                        RandomlyFillAnArray(choice, array);
                         break;
                     case 2:
                         Console.WriteLine("\nДля введення кожного елемента в окремому рядку введіть 1.");
@@ -161,12 +161,12 @@ namespace Lab4
                             switch (choice3)
                             {
                                 case 1:
-                                    StartToFillAnArray(out n, out array);
-                                    FillAnArrayOneByOne(choice, n, array);
+                                    StartToFillAnArray(out array);
+                                    FillAnArrayOneByOne(choice, array);
                                     break;
                                 case 2:
-                                    StartToFillAnArray(out n, out array);
-                                    FillAnArrayInOneRow(choice, n, array);
+                                    StartToFillAnArray(out array);
+                                    FillAnArrayInOneRow(choice, array);
                                     break;
                                 case 0:
                                     Console.WriteLine("Переходимо до минулого етапу.");
@@ -188,7 +188,7 @@ namespace Lab4
             }
             while (choice2 != 0);
         }
-        static void Main(string[] args)
+        static void Main()
         {
             Console.OutputEncoding = UTF8Encoding.UTF8;
             int choice;
