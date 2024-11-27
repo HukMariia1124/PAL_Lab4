@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -9,59 +10,49 @@ namespace Lab4
     {
         static void WithoutUsingMethods(int[] array)
         {
-            int max = array[0];
-            int min = array[0];
             int maxIndex = 0;
             int minIndex = 0;
 
             for (int i = 1; i < array.Length; i++)
             {
-                if (array[i] >= max)
+                if (array[i] >= array[maxIndex])
                 {
-                    max = array[i];
                     maxIndex = i;
                 }
-
-                if (array[i] <= min)
+                if (array[i] <= array[minIndex])
                 {
-                    min = array[i];
                     minIndex = i;
                 }
             }
 
-            int startIndex = Math.Min(maxIndex, minIndex) + 1;
-            int endIndex = Math.Max(maxIndex, minIndex);
+            if (maxIndex < minIndex)
+            {
+                (maxIndex,minIndex) = (minIndex, maxIndex);
+            }
+            minIndex++;
 
-            if (startIndex >= endIndex)
+            if (minIndex >= maxIndex)
             {
                 Console.WriteLine("Масив: [" + string.Join(", ", array) + "]");
                 Console.WriteLine("Діапазон між останніми входженнями максимального та мінімального значень не існує.");
             }
             else
             {
-                int[] array2 = array[startIndex..endIndex];
                 int sum = 0;
-
-                for (int i = 0; i < array2.Length; i++)
+                for (int i = minIndex; i < maxIndex; i++)
                 {
-                    sum += array2[i];
+                    sum += array[i];
                 }
-
-                double average = (double)sum / array2.Length;
-
                 Console.WriteLine("Масив: [" + string.Join(", ", array) + "]");
-                Console.WriteLine("Елементи масиву, які розміщені між останніми входженнями максимального та мінімального чисел: [" + string.Join(", ", array2) + "]");
-                Console.WriteLine("Середнє арифметичне: " + average);
+                Console.WriteLine("Елементи масиву, які розміщені між останніми входженнями максимального та мінімального чисел: [" + string.Join(", ", array[minIndex..maxIndex]) + "]");
+                Console.WriteLine("Середнє арифметичне: " + (double)sum / (maxIndex - minIndex));
             }
             Main();
         }
         static void UsingMethods(int[] array)
         {
-            int max = array.Max();
-            int min = array.Min();
-
-            int maxIndex = Array.LastIndexOf(array, max);
-            int minIndex = Array.LastIndexOf(array, min);
+            int maxIndex = Array.LastIndexOf(array, array.Max());
+            int minIndex = Array.LastIndexOf(array, array.Min());
 
             int startIndex = Math.Min(maxIndex, minIndex) + 1;
             int endIndex = Math.Max(maxIndex, minIndex);
@@ -73,13 +64,9 @@ namespace Lab4
             }
             else
             {
-                int[] array2 = array[startIndex..endIndex];
-
-                double average = array2.Average();
-
                 Console.WriteLine("Масив: [" + string.Join(", ", array) + "]");
-                Console.WriteLine("Елементи масиву, які розміщені між останніми входженнями максимального та мінімального чисел: [" + string.Join(", ", array2) + "]");
-                Console.WriteLine("Середнє арифметичне: " + average);
+                Console.WriteLine("Елементи масиву, які розміщені між останніми входженнями максимального та мінімального чисел: [" + string.Join(", ", array[startIndex..endIndex]) + "]");
+                Console.WriteLine("Середнє арифметичне: " + array[startIndex..endIndex].Average());
             }
             Main();
         }
@@ -117,10 +104,11 @@ namespace Lab4
             }
             ChosenMethod(choice, array);
         }
-        static void FillAnArrayInOneRow(int choice, int[] array)
+        static void FillAnArrayInOneRow(int choice)
         {
             Console.WriteLine("Введіть всі елементи масива в одному рядку");
             string[] elements = Console.ReadLine().Trim().Split();
+            int[] array = new int[elements.Length];
             for (int i = 0; i < array.Length; i++)
             {
                 array[i] = int.Parse(elements[i]);
@@ -136,7 +124,7 @@ namespace Lab4
         }
         static void HowToFillAnArray(int choice)
         {
-            int choice2, choice3, n;
+            int choice2, choice3;
             int[] array;
             do
             {
@@ -165,8 +153,7 @@ namespace Lab4
                                     FillAnArrayOneByOne(choice, array);
                                     break;
                                 case 2:
-                                    StartToFillAnArray(out array);
-                                    FillAnArrayInOneRow(choice, array);
+                                    FillAnArrayInOneRow(choice);
                                     break;
                                 case 0:
                                     Console.WriteLine("Переходимо до минулого етапу.");
