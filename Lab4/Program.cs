@@ -54,10 +54,9 @@ namespace Lab4
             int maxIndex = Array.LastIndexOf(array, array.Max());
             int minIndex = Array.LastIndexOf(array, array.Min());
 
-            int startIndex = Math.Min(maxIndex, minIndex) + 1;
-            int endIndex = Math.Max(maxIndex, minIndex);
+            (maxIndex, minIndex) = (Math.Max(maxIndex, minIndex), Math.Min(maxIndex, minIndex) + 1);
 
-            if (startIndex >= endIndex)
+            if (minIndex >= maxIndex)
             {
                 Console.WriteLine("Масив: [" + string.Join(", ", array) + "]");
                 Console.WriteLine("Елементів між останніми входженнями максимального та мінімального чисел не існує.");
@@ -65,8 +64,8 @@ namespace Lab4
             else
             {
                 Console.WriteLine("Масив: [" + string.Join(", ", array) + "]");
-                Console.WriteLine("Елементи масиву, які розміщені між останніми входженнями максимального та мінімального чисел: [" + string.Join(", ", array[startIndex..endIndex]) + "]");
-                Console.WriteLine("Середнє арифметичне: " + array[startIndex..endIndex].Average());
+                Console.WriteLine("Елементи масиву, які розміщені між останніми входженнями максимального та мінімального чисел: [" + string.Join(", ", array[minIndex..maxIndex]) + "]");
+                Console.WriteLine("Середнє арифметичне: " + array[minIndex..maxIndex].Average());
             }
             Main();
         }
@@ -106,6 +105,7 @@ namespace Lab4
         }
         static void FillAnArrayInOneRow(int choice)
         {
+            Console.WriteLine("\nМетод заповнення обрано");
             Console.WriteLine("Введіть всі елементи масива в одному рядку");
             string[] elements = Console.ReadLine().Trim().Split();
             int[] array = new int[elements.Length];
